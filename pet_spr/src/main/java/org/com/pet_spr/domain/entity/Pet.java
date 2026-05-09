@@ -1,0 +1,60 @@
+package org.com.pet_spr.domain.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nimbusds.openid.connect.sdk.claims.Gender;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.com.pet_spr.constant.GenderEnum;
+import org.com.pet_spr.domain.dto.common.FlagUserDateAuditing;
+import org.hibernate.annotations.UuidGenerator;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Getter
+@Setter
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "tbl_pets")
+public class Pet extends FlagUserDateAuditing {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "specie")
+    private String specie;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
+    private GenderEnum gender;
+
+    @Column(name = "birhday")
+    private LocalDateTime birthday;
+
+    @Column(name = "weight")
+    private float weight;
+
+    @Column(name = "health_status")
+    private String healthStatus;
+
+    @Column(name = "active")
+    private boolean active;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "pet")
+    @JsonIgnore
+    private List<Booking> bookings;
+
+}
