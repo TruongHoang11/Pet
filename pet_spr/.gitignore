@@ -1,0 +1,55 @@
+### --- THƯ MỤC BUILD (Bắt buộc) ---
+target/
+build/
+out/
+bin/
+*.generated
+
+### --- CẤU HÌNH NHẠY CẢM ---
+# Chặn cả .yml và .yaml
+src/main/resources/application.yml
+src/main/resources/application.yaml
+src/main/resources/application.properties
+src/main/resources/application-*.yml
+src/main/resources/application-*.yaml
+src/main/resources/application-*.properties
+
+# Nhưng vẫn cho phép đẩy file ví dụ để người khác biết cách cấu hình
+!src/main/resources/application.yml.example
+!src/main/resources/application.properties.example
+
+### --- IDE RÁC ---
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+atlassian-ide-plugin.xml
+com_crashlytics_export_strings.xml
+
+# Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+### --- MAVEN WRAPPER ---
+# Giữ lại file jar và script của wrapper để người khác có thể chạy project mà không cần cài Maven
+.mvn/
+!/.mvn/wrapper/maven-wrapper.jar
+!/.mvn/wrapper/maven-wrapper.properties
+mvnw
+mvnw.cmd
+
+### --- HỆ ĐIỀU HÀNH & NHẬT KÝ ---
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
