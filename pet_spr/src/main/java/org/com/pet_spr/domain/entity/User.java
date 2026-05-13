@@ -23,7 +23,7 @@ import java.util.List;
 @Setter
 @Builder
 @Entity
-@Table(name = "users")
+@Table(name = "tbl_users")
 public class User extends UserDateAuditing implements Serializable {
 
     @Id
@@ -53,8 +53,6 @@ public class User extends UserDateAuditing implements Serializable {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "refresh_token", columnDefinition = "TEXT")
-    private String refreshToken;
 
     @Column(name ="provider")
     private String provider; // GOOGLE or FACEBOOK

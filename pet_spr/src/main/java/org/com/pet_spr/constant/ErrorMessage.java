@@ -32,6 +32,9 @@ public class ErrorMessage {
     public static final String EXPIRED_REFRESH_TOKEN = "exception.auth.expired.refresh.token";
     public static final String ERR_ALREADY_EXISTS_EMAIL = "exception.auth.already.exists.email";
     public static final String ERR_ALREADY_LOGGED_IN="exception.auth.already.logged";
+    public static final String  ERR_NOT_LOGIN = "exception.auth.not.login";
+    public static final String  ERR_SESSION_EXPIRED = "exception.auth.expired.access.token";
+    public static final String  ERR_INVALID_ACCESS_TOKEN = "exception.auth.invalid.access.token"; // Thêm dòng này
   }
 
   public static class User {

@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "tbl_roles")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -34,7 +34,7 @@ public class Role extends FlagUserDateAuditing implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties("roles")
     @JoinTable(
-            name = "permission_role",
+            name = "tbl_permission_role",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )

@@ -24,4 +24,6 @@ public interface UserRepository extends JpaRepository<User, String> {
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME,
                         new String[]{currentUser.getUsername()}));
     }
+
+    boolean existsByEmail(String email);
 }
