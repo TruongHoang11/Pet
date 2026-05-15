@@ -17,7 +17,7 @@ public enum SEARCH_OPERATION {
 
     public static SEARCH_OPERATION getSimpleOperation(char simpleOperation){
         return switch (simpleOperation) {
-            case '=' -> EQUALITY;
+            case ':' -> EQUALITY;
             case '!' -> NEGATION;
             case '>' -> GREATER_THAN;
             case '<' -> LESS_THAN;

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Table(name = "tbl_forget_password")
 @AllArgsConstructor
 @NoArgsConstructor
 public class ForgetPassword {

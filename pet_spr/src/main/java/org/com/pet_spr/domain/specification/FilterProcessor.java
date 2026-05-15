@@ -6,11 +6,8 @@ import java.util.regex.Pattern;
 
 public record FilterProcessor(SpecificationBuilder<?> specificationBuilder, List<String> filter) {
     public static FilterProcessor process(SpecificationBuilder<?> specificationBuilder, List<String> filter){
-        SpecificationBuilder<?> builder = new SpecificationBuilder<>();
         if (filter == null || filter.isEmpty()) {
-            return new FilterProcessor(builder, filter);
-//            Nếu người dùng không truyền bộ lọc nào (null hoặc rỗng),
-//            hệ thống sẽ trả về một kết quả "trống" nhưng vẫn hợp lệ.
+            return new FilterProcessor(specificationBuilder, filter);
         }else {
             Pattern pattern = Pattern.compile("^('?)\\s*([a-zA-Z0-9_.]+)([<:>~!])(.*)$");
             for(String condition : filter){

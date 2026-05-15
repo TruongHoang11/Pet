@@ -1,30 +1,29 @@
 package org.com.pet_spr.domain.specification;
 
-import org.springframework.boot.autoconfigure.rsocket.RSocketProperties;
+
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class SpecificationBuilder<T> {
     private final List<SpecSearchCriteria> params;
-
-    public SpecificationBuilder(){
-        this.params = new ArrayList();
-
+    public  SpecificationBuilder() {
+        this.params = new ArrayList<>();
     }
 
-    public SpecificationBuilder<T> with(String key, String operation, Object value, String prefix, String suffix){
+    public SpecificationBuilder<T> with(String key, String operation, Object value, String prefix, String suffix) {
         return with(null, key, operation, value, prefix, suffix);
     }
 
-    public SpecificationBuilder<T> with(String orPredicate, String key, String operation, Object value, String prefix, String suffix){
+    public SpecificationBuilder<T> with(String orPredicate ,String key, String operation, Object value, String prefix, String suffix){
+
         params.add(new SpecSearchCriteria(orPredicate, key, operation, value, prefix, suffix));
 
         return this;
     }
-
-
     public Specification<T> build(){
         if(params.isEmpty()){
             return null;
@@ -41,6 +40,4 @@ public class SpecificationBuilder<T> {
         }
         return  result;
     }
-
-
 }

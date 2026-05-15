@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.aspectj.weaver.ast.Or;
 import org.com.pet_spr.constant.GenderEnum;
+import org.com.pet_spr.domain.dto.common.FlagUserDateAuditing;
 import org.com.pet_spr.domain.dto.common.UserDateAuditing;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -24,7 +25,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "tbl_users")
-public class User extends UserDateAuditing implements Serializable {
+public class User extends FlagUserDateAuditing implements Serializable {
 
     @Id
     @UuidGenerator

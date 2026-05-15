@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class GenericSpecification<T> implements Specification<T> {
     private final SpecSearchCriteria specSearchCriteria;
-    public GenericSpecification(SpecSearchCriteria specSearchCriteria){
+    public GenericSpecification(final SpecSearchCriteria specSearchCriteria){
         this.specSearchCriteria = specSearchCriteria;
     }
 
@@ -15,7 +15,7 @@ public class GenericSpecification<T> implements Specification<T> {
         Path<?> path = getPath(root, specSearchCriteria.getKey());
         Object value = castToRequiredType(path.getJavaType(), specSearchCriteria.getValue());
 
-        return switch (specSearchCriteria.getSearchOperation()){
+        return switch (specSearchCriteria.getOperation()){
             case EQUALITY -> criteriaBuilder.equal(path, value);
             case NEGATION -> criteriaBuilder.notEqual(path, value);
             case GREATER_THAN -> criteriaBuilder.greaterThanOrEqualTo((Path<Comparable>)path, (Comparable) value);
