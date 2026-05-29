@@ -1,7 +1,7 @@
 package org.com.pet_spr.util;
 
 import lombok.SneakyThrows;
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,7 +38,7 @@ public class FileUtil {
       fileList.add(sourceFolder);
     }
 
-    if (!CollectionUtils.isEmpty(fileList)) {
+    if (CollectionUtils.isNotEmpty(fileList)) {
       ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
       ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream);
       try {

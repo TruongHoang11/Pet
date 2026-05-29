@@ -32,6 +32,9 @@ public class ErrorMessage {
     public static final String EXPIRED_REFRESH_TOKEN = "exception.auth.expired.refresh.token";
     public static final String ERR_ALREADY_EXISTS_EMAIL = "exception.auth.already.exists.email";
     public static final String ERR_ALREADY_LOGGED_IN="exception.auth.already.logged";
+    public static final String  ERR_NOT_LOGIN = "exception.auth.not.login";
+    public static final String  ERR_SESSION_EXPIRED = "exception.auth.expired.access.token";
+    public static final String  ERR_INVALID_ACCESS_TOKEN = "exception.auth.invalid.access.token"; // Thêm dòng này
   }
 
   public static class User {
@@ -44,17 +47,26 @@ public class ErrorMessage {
   public static class Role{
     public static final String ERR_NOT_FOUND_ROLE = "exception.role.not.found";
   }
+  public static class Product {
+    public static final String ERR_EXISTS_NAME = "exception.product.already.exist.name";
 
-  public static class Company{
-    public static final String ERR_NOT_FOUND_COMPANY = "exception.company.not.found";
+    public static final String ERR_NOT_FOUND_ID = "exception.product.not.id.found";
   }
 
-  public static class Skill{
-    public static final String ERR_NOT_FOUND_SKILL = "exception.skill.not.found";
-  }
-  public static class Job{
-    public static final String ERR_NOT_FOUND_SKILL = "exception.job.not.found";
+  public static class Category {
+    public static final String ERR_NOT_FOUND_ID= "exception.category.not.id.found";
 
-    public static final String ERR_EXISTED_JOB = "exception.job.already.exists.";
   }
+
+
+  public static class File{
+    public static final String ERR_INVALID_FORMAT_FILE= "exception.file.invalid.format";
+  }
+
+  public static class ProductImage {
+    public static final String ERR_EXISTS_NAME = "exception.product.image.already.exist.name";
+
+    public static final String ERR_NOT_FOUND_ID = "exception.product.image.not.id.found";
+  }
+
 }

@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.aspectj.weaver.ast.Or;
 import org.com.pet_spr.constant.GenderEnum;
+import org.com.pet_spr.domain.dto.common.FlagUserDateAuditing;
 import org.com.pet_spr.domain.dto.common.UserDateAuditing;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -23,8 +24,8 @@ import java.util.List;
 @Setter
 @Builder
 @Entity
-@Table(name = "users")
-public class User extends UserDateAuditing implements Serializable {
+@Table(name = "tbl_users")
+public class User extends FlagUserDateAuditing implements Serializable {
 
     @Id
     @UuidGenerator
@@ -53,8 +54,6 @@ public class User extends UserDateAuditing implements Serializable {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "refresh_token", columnDefinition = "TEXT")
-    private String refreshToken;
 
     @Column(name ="provider")
     private String provider; // GOOGLE or FACEBOOK

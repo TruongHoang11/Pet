@@ -8,7 +8,7 @@ import lombok.Setter;
 import org.com.pet_spr.domain.dto.common.FlagUserDateAuditing;
 
 @Entity
-@Table(name = "cart_items")
+@Table(name = "tbl_cart_items")
 @Getter
 @Setter
 @NoArgsConstructor
