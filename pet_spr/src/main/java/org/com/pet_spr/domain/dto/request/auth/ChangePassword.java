@@ -1,4 +1,4 @@
-package org.com.pet_spr.domain.dto.request;
+package org.com.pet_spr.domain.dto.request.auth;
 
 import lombok.Getter;
 

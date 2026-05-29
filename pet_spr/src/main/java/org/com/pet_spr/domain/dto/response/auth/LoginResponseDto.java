@@ -1,16 +1,12 @@
-package org.com.pet_spr.domain.dto.response;
+package org.com.pet_spr.domain.dto.response.auth;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.collections4.MultiValuedMap;
 import org.com.pet_spr.constant.CommonConstant;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
-import java.util.List;
 
 @Getter
 @Setter

@@ -11,7 +11,7 @@ public class GenericSpecification<T> implements Specification<T> {
     }
 
     @Override
-    public @Nullable Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         Path<?> path = getPath(root, specSearchCriteria.getKey());
         Object value = castToRequiredType(path.getJavaType(), specSearchCriteria.getValue());
 
@@ -20,14 +20,13 @@ public class GenericSpecification<T> implements Specification<T> {
             case NEGATION -> criteriaBuilder.notEqual(path, value);
             case GREATER_THAN -> criteriaBuilder.greaterThanOrEqualTo((Path<Comparable>)path, (Comparable) value);
             case LESS_THAN -> criteriaBuilder.lessThanOrEqualTo((Path<Comparable>)path, (Comparable) value);
-            case CONTAINS -> criteriaBuilder.like(path.as(String.class), "%" + value + "%");
+            // 🛠️ FIX: Thêm phần toLowerCase() hoặc đảm bảo chuỗi không chứa dấu trống dư thừa
+            case CONTAINS -> criteriaBuilder.like(criteriaBuilder.lower(path.as(String.class)), "%" + value.toString().toLowerCase() + "%");
             case LIKE ->  criteriaBuilder.like(path.as(String.class), value.toString());
-            case STARTS_WITH -> criteriaBuilder.like(path.as(String.class), value + "%");
-            case ENDS_WITH -> criteriaBuilder.like(path.as(String.class), "%" + value);
+            case STARTS_WITH -> criteriaBuilder.like(criteriaBuilder.lower(path.as(String.class)), value.toString().toLowerCase() + "%");
+            case ENDS_WITH -> criteriaBuilder.like(criteriaBuilder.lower(path.as(String.class)), "%" + value.toString().toLowerCase());
             default -> null;
         };
-
-
     }
 
     private Path<?> getPath(Root<T> root, String key){

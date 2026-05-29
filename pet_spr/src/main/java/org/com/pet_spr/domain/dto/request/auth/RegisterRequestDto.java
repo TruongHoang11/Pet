@@ -1,6 +1,5 @@
-package org.com.pet_spr.domain.dto.request;
+package org.com.pet_spr.domain.dto.request.auth;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +10,6 @@ import lombok.Setter;
 import org.com.pet_spr.constant.ErrorMessage;
 import org.com.pet_spr.constant.GenderEnum;
 import org.com.pet_spr.domain.dto.common.DateAuditing;
-import org.hibernate.validator.constraints.EAN;
 
 @Setter
 @Getter

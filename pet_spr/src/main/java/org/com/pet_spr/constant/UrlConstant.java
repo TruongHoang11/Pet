@@ -35,6 +35,19 @@ public class UrlConstant {
     private User() {
     }
   }
+  public static class Product {
+    private static final String PRE_FIX = "/product";
+
+    public static final String GET_PRODUCTS = PRE_FIX;
+    public static final String GET_PRODUCT = PRE_FIX + "/{id}";
+    public static final String CREATE_PRODUCT = PRE_FIX;
+    public static final String UPDATE_PRODUCT = PRE_FIX;
+    public static final String DELETE_PRODUCT = PRE_FIX + "/{id}";
+
+
+    private Product() {
+    }
+  }
 
   public static class Job {
     private static final String PRE_FIX = "/job";
@@ -47,6 +60,18 @@ public class UrlConstant {
 
 
     private Job() {
+    }
+  }
+
+
+  public static class ProductImages {
+    private static final String PRE_FIX = "/product-images";
+
+    public static final String ADD_IMAGES = PRE_FIX;
+    public static final String DELETE_IMAGE = PRE_FIX + "/{id}";
+
+
+    private ProductImages() {
     }
   }
 

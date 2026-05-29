@@ -1,11 +1,10 @@
-package org.com.pet_spr.domain.dto.response;
+package org.com.pet_spr.domain.dto.response.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.com.pet_spr.constant.GenderEnum;
-import org.com.pet_spr.domain.dto.common.DateAuditing;
 
 @Setter
 @Getter

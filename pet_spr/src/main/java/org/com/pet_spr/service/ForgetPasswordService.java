@@ -1,7 +1,7 @@
 package org.com.pet_spr.service;
 
 import jakarta.mail.MessagingException;
-import org.com.pet_spr.domain.dto.request.ChangePassword;
+import org.com.pet_spr.domain.dto.request.auth.ChangePassword;
 import org.com.pet_spr.domain.dto.response.CommonResponseDto;
 
 public interface ForgetPasswordService {

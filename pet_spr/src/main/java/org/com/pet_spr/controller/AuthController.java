@@ -4,32 +4,23 @@ package org.com.pet_spr.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections4.MultiValuedMap;
-import org.checkerframework.checker.units.qual.A;
 import org.com.pet_spr.base.RestApiV1;
-import org.com.pet_spr.base.RestData;
 import org.com.pet_spr.base.VsResponseUtil;
 import org.com.pet_spr.constant.UrlConstant;
-import org.com.pet_spr.domain.dto.request.LoginRequestDto;
-import org.com.pet_spr.domain.dto.request.RegisterRequestDto;
+import org.com.pet_spr.domain.dto.request.auth.LoginRequestDto;
+import org.com.pet_spr.domain.dto.request.auth.RegisterRequestDto;
 import org.com.pet_spr.domain.dto.response.CommonResponseDto;
-import org.com.pet_spr.domain.dto.response.LoginResponseDto;
-import org.com.pet_spr.domain.dto.response.LoginResult;
-import org.com.pet_spr.domain.dto.response.RegisterResponseDto;
+import org.com.pet_spr.domain.dto.response.auth.LoginResponseDto;
+import org.com.pet_spr.domain.dto.response.auth.LoginResult;
+import org.com.pet_spr.domain.dto.response.auth.RegisterResponseDto;
 import org.com.pet_spr.service.AuthService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Map;
-
-import static org.com.pet_spr.base.VsResponseUtil.error;
 import static org.com.pet_spr.base.VsResponseUtil.success;
 
 @RestApiV1

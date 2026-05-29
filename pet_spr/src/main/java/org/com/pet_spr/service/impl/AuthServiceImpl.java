@@ -1,17 +1,15 @@
 package org.com.pet_spr.service.impl;
 
-import jakarta.mail.search.HeaderTerm;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.com.pet_spr.constant.ErrorMessage;
 import org.com.pet_spr.constant.RoleConstant;
-import org.com.pet_spr.domain.dto.request.LoginRequestDto;
-import org.com.pet_spr.domain.dto.request.RegisterRequestDto;
+import org.com.pet_spr.domain.dto.request.auth.LoginRequestDto;
+import org.com.pet_spr.domain.dto.request.auth.RegisterRequestDto;
 import org.com.pet_spr.domain.dto.response.CommonResponseDto;
-import org.com.pet_spr.domain.dto.response.LoginResponseDto;
-import org.com.pet_spr.domain.dto.response.LoginResult;
-import org.com.pet_spr.domain.dto.response.RegisterResponseDto;
-import org.com.pet_spr.domain.entity.Role;
+import org.com.pet_spr.domain.dto.response.auth.LoginResponseDto;
+import org.com.pet_spr.domain.dto.response.auth.LoginResult;
+import org.com.pet_spr.domain.dto.response.auth.RegisterResponseDto;
 import org.com.pet_spr.domain.entity.User;
 import org.com.pet_spr.domain.entity.UserSession;
 import org.com.pet_spr.exception.ConflictException;
@@ -21,31 +19,23 @@ import org.com.pet_spr.repository.RoleRepository;
 import org.com.pet_spr.repository.TokenBlackListRepository;
 import org.com.pet_spr.repository.UserRepository;
 import org.com.pet_spr.repository.UserSessionRepository;
-import org.com.pet_spr.security.CurrentUser;
 import org.com.pet_spr.security.UserPrincipal;
 import org.com.pet_spr.security.jwt.JwtPreFilter;
 import org.com.pet_spr.security.jwt.JwtTokenProvider;
 import org.com.pet_spr.service.AuthService;
 import org.com.pet_spr.util.TokenBlackListUtil;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.net.ResponseCache;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor

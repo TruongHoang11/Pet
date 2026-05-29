@@ -28,31 +28,39 @@ public class SpecSearchCriteria {
     }
 
     public SpecSearchCriteria(String orPredicate, String key, String operation, Object value, String prefix, String suffix) {
-        if(operation != null && operation.isEmpty()){
+        if(operation == null || operation.isEmpty()){
             throw new IllegalArgumentException("Search operation cannot be empty or null");
         }
+
         SEARCH_OPERATION searchOperation = SEARCH_OPERATION.getSimpleOperation(operation.charAt(0));
+
         if(searchOperation != null){
-            if(searchOperation == EQUALITY){
-                final boolean startWithAsterisks = prefix != null && prefix.contains(ZERO_OR_MORE_REGEX);
-                final boolean endWithAsterisks = suffix != null && suffix.contains(ZERO_OR_MORE_REGEX);
+            // 🛠️ FIX: Nếu là phép toán tìm kiếm bình thường bằng dấu `:` hoặc `~`
+            if(searchOperation == SEARCH_OPERATION.EQUALITY) {
+                boolean startWithAsterisks = (prefix != null && prefix.contains(SEARCH_OPERATION.ZERO_OR_MORE_REGEX))
+                        || (value != null && value.toString().startsWith(SEARCH_OPERATION.ZERO_OR_MORE_REGEX));
+                boolean endWithAsterisks = (suffix != null && suffix.contains(SEARCH_OPERATION.ZERO_OR_MORE_REGEX))
+                        || (value != null && value.toString().endsWith(SEARCH_OPERATION.ZERO_OR_MORE_REGEX));
+
                 if(startWithAsterisks && endWithAsterisks){
-                    searchOperation = CONTAINS;
+                    searchOperation = SEARCH_OPERATION.CONTAINS;
                 } else if (startWithAsterisks) {
-                    searchOperation = ENDS_WITH;
+                    searchOperation = SEARCH_OPERATION.ENDS_WITH;
                 } else if(endWithAsterisks){
-                    searchOperation = STARTS_WITH;
+                    searchOperation = SEARCH_OPERATION.STARTS_WITH;
+                } else {
+                    // Mặc định đối với trường Text, nếu không chỉ định cụ thể, nên chuyển sang dạng CONTAINS để dễ tìm kiếm
+                    searchOperation = SEARCH_OPERATION.CONTAINS;
                 }
             }
-
         }
+
         this.key = key;
         this.operation = searchOperation;
         this.value = value;
-        this.orPredicate = orPredicate != null && orPredicate.equals(OR_PREDICATE_FLAG);
-        // khong co predicate mac dinh la AND
+        this.orPredicate = orPredicate != null && orPredicate.equals(SEARCH_OPERATION.OR_PREDICATE_FLAG);
+        // ko co predicate mac dinh la and
     }
-
     public static void handleWildCardSearch(String valueStr, String orPredicate,String prefix, String suffix, boolean isOrPredicate){
         if(valueStr.startsWith("*")){
             prefix = "*";

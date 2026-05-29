@@ -1,6 +1,7 @@
 package org.com.pet_spr.domain.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class Inventory extends DateAuditing {
     private Product product;
 
     @OneToMany(mappedBy = "inventory")
+    @JsonIgnore
     private List<InventoryTransaction> inventoryTransactions;
 
 
