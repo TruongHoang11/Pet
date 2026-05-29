@@ -1,7 +1,6 @@
 package org.com.pet_spr.domain.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,13 +37,9 @@ public class Menu extends DateAuditing {
     @JoinColumn(name = "parent_id")
     private Menu parent;
 
-    @OneToMany(mappedBy = "parent") //MỘT category cha có NHIỀU category con
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL) //MỘT category cha có NHIỀU category con
     @OrderBy("sortOrder ASC") // Tự động sắp xếp các con khi lấy ra
     private List<Menu> children; // Danh sách các category con
 
-
-    @OneToMany(mappedBy = "menu")
-    @JsonIgnore
-    private List<Category> categories;
 
 }
