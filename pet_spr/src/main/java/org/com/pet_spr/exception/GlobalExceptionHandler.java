@@ -118,7 +118,6 @@ public class GlobalExceptionHandler {
     return VsResponseUtil.error(ex.getStatus(), message);
   }
 
-
   @ExceptionHandler(ForbiddenException.class)
   public ResponseEntity<RestData<?>> handleAccessDeniedException(ForbiddenException ex) {
     String message = messageSource.getMessage(ex.getMessage(), ex.getParams(), LocaleContextHolder.getLocale());

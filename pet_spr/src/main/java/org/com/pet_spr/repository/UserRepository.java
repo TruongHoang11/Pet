@@ -5,14 +5,13 @@ import org.com.pet_spr.domain.entity.User;
 import org.com.pet_spr.exception.NotFoundException;
 import org.com.pet_spr.security.UserPrincipal;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, String>, JpaSpecificationExecutor<User> {
+public interface UserRepository extends JpaRepository<User, String> {
 
 
     Optional<User> findByEmail(String email);
@@ -25,6 +24,4 @@ public interface UserRepository extends JpaRepository<User, String>, JpaSpecific
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME,
                         new String[]{currentUser.getUsername()}));
     }
-
-    boolean existsByEmail(String email);
 }

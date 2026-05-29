@@ -43,7 +43,7 @@ public class UserPrincipal implements UserDetails {
     List<GrantedAuthority> authorities = new LinkedList<>();
     authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
     return new UserPrincipal(user.getId(),
-        user.getEmail(), user.getPassword(), authorities);
+        user.getName(), user.getPassword(), authorities);
   }
 
   public String getId() {

@@ -12,7 +12,7 @@ import org.com.pet_spr.domain.dto.common.UserDateAuditing;
 import java.util.List;
 
 @Entity
-@Table(name = "tbl_permissions")
+@Table(name = "permissions")
 @Getter
 @Setter
 @NoArgsConstructor

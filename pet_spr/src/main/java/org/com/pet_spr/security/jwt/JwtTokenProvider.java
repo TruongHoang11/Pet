@@ -13,10 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -53,7 +50,7 @@ public class JwtTokenProvider {
       return Jwts.builder()
           .setClaims(claim)
           .setIssuedAt(new Date(System.currentTimeMillis()))
-          .setExpiration(new Date(System.currentTimeMillis() + (EXPIRATION_TIME_REFRESH_TOKEN)))
+          .setExpiration(new Date(System.currentTimeMillis() + (EXPIRATION_TIME_REFRESH_TOKEN * 60 * 1000L)))
           .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
           .compact();
     }
@@ -61,7 +58,7 @@ public class JwtTokenProvider {
         .setClaims(claim)
         .setSubject(userPrincipal.getId())
         .setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + (EXPIRATION_TIME_ACCESS_TOKEN )))
+        .setExpiration(new Date(System.currentTimeMillis() + (EXPIRATION_TIME_ACCESS_TOKEN * 60 * 1000L)))
         .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
         .compact();
   }
@@ -112,25 +109,6 @@ public class JwtTokenProvider {
       log.error("JWT claims string is empty");
     }
     return false;
-  }
-
-  public static Optional<String> getCurrentUserLogin() {
-    SecurityContext securityContext = SecurityContextHolder.getContext();
-    return Optional.ofNullable(extractPrincipal(securityContext.getAuthentication()));
-  }
-
-  // trich xuat dinh danh thuong la email hoac username
-  private static String extractPrincipal(Authentication authentication) {
-    if (authentication == null) {
-      return null;
-    } else if (authentication.getPrincipal() instanceof UserDetails springSecurityUser) {
-      return springSecurityUser.getUsername();
-    } else if (authentication.getPrincipal() instanceof Jwt jwt) {
-      return jwt.getSubject();
-    } else if (authentication.getPrincipal() instanceof String s) {
-      return s;
-    }
-    return null;
   }
 
 }

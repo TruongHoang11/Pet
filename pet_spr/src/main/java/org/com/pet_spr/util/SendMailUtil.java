@@ -5,7 +5,6 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 
 import org.com.pet_spr.domain.dto.common.DataMailDto;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -18,11 +17,9 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
-public  class SendMailUtil {
-  @Value("${spring.mail.username}")
-  private String emailFrom ;
+public class SendMailUtil {
 
-  private  final JavaMailSender mailSender;
+  private final JavaMailSender mailSender;
 
   private final TemplateEngine templateEngine;
 
@@ -61,17 +58,6 @@ public  class SendMailUtil {
         helper.addAttachment(Objects.requireNonNull(file.getOriginalFilename()), file);
       }
     }
-    mailSender.send(message);
-  }
-
-  public  void sendEmail(DataMailDto mail) throws MessagingException {
-    MimeMessage message = mailSender.createMimeMessage();
-    MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
-
-    helper.setFrom(emailFrom);
-    helper.setTo(mail.getTo());
-    helper.setSubject(mail.getSubject());
-    helper.setText(mail.getContent(), false);
     mailSender.send(message);
   }
 
