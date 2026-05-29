@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.com.pet_spr.constant.ErrorMessage;
+import org.com.pet_spr.constant.TypeInventory;
 import org.com.pet_spr.domain.dto.pagination.ResultPaginationDto;
 import org.com.pet_spr.domain.dto.request.ReqCreateProduct;
 import org.com.pet_spr.domain.dto.request.ReqUpdateProduct;
@@ -17,6 +18,7 @@ import org.com.pet_spr.exception.ConflictException;
 import org.com.pet_spr.exception.NotFoundException;
 import org.com.pet_spr.repository.CategoryRepository;
 import org.com.pet_spr.repository.InventoryRepository;
+import org.com.pet_spr.repository.InventoryTransactionRepository;
 import org.com.pet_spr.repository.ProductRepository;
 import org.com.pet_spr.service.ProductService;
 import org.springframework.data.domain.Page;
@@ -34,6 +36,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
     private final InventoryRepository inventoryRepository;
+    private final InventoryTransactionRepository inventoryTransactionRepository;
 
     public void checkExistProductByName(String name) {
         log.info("[CHECK] Kiểm tra trùng lặp tên sản phẩm: '{}'", name);
@@ -73,15 +76,17 @@ public class ProductServiceImpl implements ProductService {
         log.info("[CREATE] Lưu sản phẩm thành công. Đã sinh ra Product ID: {}", product.getId());
 
         // 5. Xử lý Inventory (Khởi tạo kho hàng)
-        if (reqCreateProduct.getQuantity() != null) {
             log.info("[CREATE] Đang khởi tạo bản ghi Inventory với số lượng ban đầu: {}", reqCreateProduct.getQuantity());
             Inventory inventory = new Inventory();
-            inventory.setQuantity(reqCreateProduct.getQuantity());
+            inventory.setQuantity(reqCreateProduct.getQuantity() != null ? reqCreateProduct.getQuantity() : 0);
             inventory.setProduct(product);
 
             inventoryRepository.save(inventory);
             product.setInventory(inventory);
             log.info("[CREATE] Đã lưu Inventory thành công cho sản phẩm ID: {}", product.getId());
+
+        if(reqCreateProduct.getQuantity() != null && reqCreateProduct.getQuantity() > 0){
+            createInventoryTransaction(inventory, reqCreateProduct.getQuantity(), TypeInventory.IMPORT, "Nhập kho khi tạo sản phẩm");
         }
 
         log.info("[CREATE] Hoàn thành tạo sản phẩm mới thành công (ID: {})", product.getId());
@@ -97,6 +102,10 @@ public class ProductServiceImpl implements ProductService {
             log.warn("[NOT_FOUND] Thất bại khi cập nhật, không tồn tại sản phẩm ID: {}", reqUpdateProduct.getId());
             return new NotFoundException(ErrorMessage.Product.ERR_NOT_FOUND_ID, new String[]{String.valueOf(reqUpdateProduct.getId())});
         });
+        if (updateProduct.getActiveFlag() == false && updateProduct.getDeleteFlag() == true){
+            log.warn("[NOT_FOUND] Thất bại khi cập nhật, không tồn tại sản phẩm ID: {}", reqUpdateProduct.getId());
+            throw new NotFoundException(ErrorMessage.Product.ERR_NOT_FOUND_ID, new String[]{String.valueOf(reqUpdateProduct.getId())});
+        }
 
         // Kiểm tra trùng tên chỉ khi tên mới khác tên cũ hiện tại
         if (!updateProduct.getName().equals(reqUpdateProduct.getName())) {
@@ -121,17 +130,34 @@ public class ProductServiceImpl implements ProductService {
         // Cập nhật Số lượng kho (Inventory)
         if (reqUpdateProduct.getQuantity() != null) {
             Inventory inventory = updateProduct.getInventory();
-            if (inventory != null && !reqUpdateProduct.getQuantity().equals(inventory.getQuantity())) {
-                log.info("[UPDATE] Cập nhật số lượng kho hàng cũ từ {} sang {}", inventory.getQuantity(), reqUpdateProduct.getQuantity());
+            if(inventory == null){
+                inventory = new Inventory();
                 inventory.setQuantity(reqUpdateProduct.getQuantity());
+                inventory.setProduct(updateProduct);
                 inventoryRepository.save(inventory);
-            } else if (inventory == null) {
-                log.info("[UPDATE] Không tìm thấy bản ghi kho cũ, đang tạo mới Inventory với số lượng: {}", reqUpdateProduct.getQuantity());
-                Inventory newInventory = new Inventory();
-                newInventory.setQuantity(reqUpdateProduct.getQuantity());
-                newInventory.setProduct(updateProduct);
-                inventoryRepository.save(newInventory);
-                updateProduct.setInventory(newInventory);
+                updateProduct.setInventory(inventory);
+                if(reqUpdateProduct.getQuantity() > 0){
+                    createInventoryTransaction(inventory, reqUpdateProduct.getQuantity(), TypeInventory.IMPORT, "Nhập kho khi cập nhật sản phẩm");
+                }
+            } else{
+                int oldQuantity = inventory.getQuantity();
+                int newQuantity = reqUpdateProduct.getQuantity();
+                int delta = newQuantity - oldQuantity;
+                if(delta != 0){
+                    log.info("[UPDATE] Số lượng kho thay đổi từ {} → {}, delta: {}", oldQuantity, newQuantity, delta);
+                    inventory.setQuantity(newQuantity);
+                    inventoryRepository.save(inventory);
+                }
+                TypeInventory type = delta > 0 ? TypeInventory.IMPORT : TypeInventory.EXPORT;
+                InventoryTransaction inventoryTransaction = new InventoryTransaction();
+                // lấy giá trị tuyệt đối của delta: thành số dương
+                inventoryTransaction.setQuantity(Math.abs(delta));
+                inventoryTransaction.setType(type);
+                inventoryTransaction.setNote("Cập nhật kho khi cập nhật sản phẩm");
+                inventoryTransaction.setInventory(inventory);
+                inventoryTransactionRepository.save(inventoryTransaction);
+                log.info("[UPDATE] Đã tạo bản ghi InventoryTransaction cho sản phẩm ID: {} với số lượng: {}, type: {}", updateProduct.getId(), Math.abs(delta), type);
+
             }
         }
 
@@ -165,6 +191,11 @@ public class ProductServiceImpl implements ProductService {
             log.warn("[NOT_FOUND] Không tìm thấy sản phẩm có ID: {}", id);
             return new NotFoundException(ErrorMessage.Product.ERR_NOT_FOUND_ID, new String[]{String.valueOf(id)});
         });
+        if (product.getActiveFlag() == false && product.getDeleteFlag() == true){
+            log.warn("[NOT_FOUND] Không tìm thấy sản phẩm có ID: {}", id);
+            throw new NotFoundException(ErrorMessage.Product.ERR_NOT_FOUND_ID, new String[]{String.valueOf(id)});
+        }
+
 
         if (Boolean.TRUE.equals(product.getDeleteFlag())) {
             log.warn("[NOT_FOUND] Truy cập thất bại! Sản phẩm ID: {} đã bị xóa mềm trước đó", id);
@@ -214,5 +245,15 @@ public class ProductServiceImpl implements ProductService {
 
         log.info("[GET_ALL] Hoàn thành phân trang dữ liệu sản phẩm thành công.");
         return resultPaginationDTO;
+    }
+
+    private void createInventoryTransaction(Inventory inventory, Integer quantity, TypeInventory type, String note){
+        InventoryTransaction inventoryTransaction = new InventoryTransaction();
+        inventoryTransaction.setQuantity(quantity);
+        inventoryTransaction.setType(type);
+        inventoryTransaction.setNote(note);
+        inventoryTransaction.setInventory(inventory);
+        inventoryTransactionRepository.save(inventoryTransaction);
+        log.info("[INVENTORY_TRANSACTION] Đã tạo bản ghi InventoryTransaction cho sản phẩm ID: {} với số lượng: {}, type: {}, note: {}", inventory.getProduct().getId(), quantity, type, note);
     }
 }
