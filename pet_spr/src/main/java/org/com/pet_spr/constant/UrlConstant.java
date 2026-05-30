@@ -75,4 +75,21 @@ public class UrlConstant {
     }
   }
 
+  public static class Inventory {
+    private static final String PRE_FIX = "/inventory";
+
+    public static final String IMPORT_PRODUCT = PRE_FIX + "/import";
+    public static final String EXPORT_PRODUCT = PRE_FIX + "/export";
+    public static final String ADJUST_PRODUCT = PRE_FIX + "/adjust";
+    public static final String GET_INVENTORY_BY_PRODUCT_ID = PRE_FIX + "/{id}";
+    public static final String GET_INVENTORY_TRANSACTION_HISTORY = PRE_FIX + "/transaction-history";
+//    public static final String CREATE_PRODUCT = PRE_FIX;
+//    public static final String UPDATE_PRODUCT = PRE_FIX;
+//    public static final String DELETE_PRODUCT = PRE_FIX + "/{id}";
+
+
+    private Inventory() {
+    }
+  }
+
 }

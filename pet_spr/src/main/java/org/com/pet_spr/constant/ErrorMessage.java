@@ -69,4 +69,17 @@ public class ErrorMessage {
     public static final String ERR_NOT_FOUND_ID = "exception.product.image.not.id.found";
   }
 
+  public static class Inventory {
+    public static final String ERR_EXISTS_NAME = "exception.inventory.already.exist.name";
+
+    public static final String ERR_NOT_FOUND_ID = "exception.inventory.not.id.found";
+
+    public static final String ERR_INVALID_QUANTITY = "exception.inventory.invalid.quantity";
+
+    public static final String ERR_NOT_ENOUGH_QUANTITY= "exception.inventory.not.enough.quantity";
+
+    public static final String ERR_ADJUST_QUANTITY_SAME_AS_CURRENT = "exception.inventory.adjust.quantity.same.as.current";
+  }
+
+
 }

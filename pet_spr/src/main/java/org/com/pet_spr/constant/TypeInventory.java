@@ -2,5 +2,6 @@ package org.com.pet_spr.constant;
 
 public enum TypeInventory {
     EXPORT, // xuat kho
-    IMPORT // nhap kho
+    IMPORT, // nhap kho
+    ADJUST    // điều chỉnh kiểm kê
 }
