@@ -1,5 +1,6 @@
 package org.com.pet_spr.service.impl;
 
+import ch.qos.logback.core.util.StringCollectionUtil;
 import lombok.RequiredArgsConstructor;
 import org.com.pet_spr.constant.ErrorMessage;
 import org.com.pet_spr.constant.RoleConstant;
@@ -16,8 +17,10 @@ import org.com.pet_spr.domain.specification.SEARCH_OPERATION;
 import org.com.pet_spr.domain.specification.SpecificationBuilder;
 import org.com.pet_spr.exception.ConflictException;
 import org.com.pet_spr.exception.NotFoundException;
+import org.com.pet_spr.exception.UnauthorizedException;
 import org.com.pet_spr.repository.RoleRepository;
 import org.com.pet_spr.repository.UserRepository;
+import org.com.pet_spr.security.SecurityUtil;
 import org.com.pet_spr.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -188,5 +191,16 @@ public class UserServiceImpl implements UserService {
         resultPaginationDTO.setResult(result);
 
         return resultPaginationDTO;
+    }
+
+    @Override
+    public User getUserLogin() {
+        String email = SecurityUtil.getCurrentUserLogin().orElseThrow(
+                () -> new UnauthorizedException(ErrorMessage.LOGIN_REQUIRED)
+        );
+        User currentUser = userRepository.findByEmail(email).orElseThrow(
+                () -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_EMAIL, new String[]{email})
+        );
+        return currentUser;
     }
 }

@@ -76,12 +76,6 @@ public class User extends FlagUserDateAuditing implements Serializable {
     private List<Order> orders;
 
 
-    // Quan hệ 1-N với CartItem
-    // mappedBy = "user" là tên biến 'user' bạn đặt trong lớp CartItem
-    // orphanRemoval = true giúp tự động xóa CartItem khỏi DB nếu bạn xóa nó khỏi list này
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> cartItems;
-
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;

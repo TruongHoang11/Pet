@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.com.pet_spr.constant.StatusEnum;
 import org.com.pet_spr.domain.dto.common.UserDateAuditing;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -25,7 +26,7 @@ public class Order extends UserDateAuditing {
     private Long id;
 
     @Column(name = "total_amount")
-    private Double totalAmount;
+    private BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

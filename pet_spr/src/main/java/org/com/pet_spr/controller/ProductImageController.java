@@ -1,18 +1,18 @@
 package org.com.pet_spr.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.com.pet_spr.base.RestApiV1;
 import org.com.pet_spr.base.VsResponseUtil;
 import org.com.pet_spr.constant.UrlConstant;
+import org.com.pet_spr.domain.dto.request.ReqSetMainImage;
 import org.com.pet_spr.domain.dto.response.CommonResponseDto;
 import org.com.pet_spr.service.ProductImageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -36,5 +36,14 @@ public class ProductImageController {
     public ResponseEntity<?> deleteImage(@PathVariable(name = "id") Long imageId){
         CommonResponseDto commonResponseDto = productImageService.deleteImage(imageId);
         return VsResponseUtil.success(HttpStatus.OK, commonResponseDto);
+    }
+
+    // Đường dẫn ví dụ: PUT /api/v1/products/1/images/5/set-main
+    @PutMapping(UrlConstant.ProductImages.SET_MAIN_IMAGE)
+    public ResponseEntity<?> changeMainImage(@RequestBody @Valid ReqSetMainImage reqSetMainImage) {
+
+        CommonResponseDto response = productImageService.changeMainImage(reqSetMainImage);
+
+        return VsResponseUtil.success(HttpStatus.OK, response);
     }
 }

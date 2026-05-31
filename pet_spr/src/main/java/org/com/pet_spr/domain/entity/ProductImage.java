@@ -23,6 +23,9 @@ public class ProductImage extends DateAuditing {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(name = "is_main")
+    private Boolean isMain = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="product_id")
     private Product product;

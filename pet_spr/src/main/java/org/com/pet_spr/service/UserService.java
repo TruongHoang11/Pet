@@ -21,4 +21,6 @@ public interface UserService {
     void deleteUser(String id);
 
     ResultPaginationDto getAllUser(List<String> filter, Pageable pageable);
+
+    User getUserLogin();
 }

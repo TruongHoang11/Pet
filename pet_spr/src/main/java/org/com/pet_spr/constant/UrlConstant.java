@@ -69,6 +69,7 @@ public class UrlConstant {
 
     public static final String ADD_IMAGES = PRE_FIX;
     public static final String DELETE_IMAGE = PRE_FIX + "/{id}";
+    public static final String SET_MAIN_IMAGE = PRE_FIX + "/set-main-image";
 
 
     private ProductImages() {
@@ -89,6 +90,34 @@ public class UrlConstant {
 
 
     private Inventory() {
+    }
+  }
+
+  public static class Cart {
+    private static final String PRE_FIX = "/cart";
+
+    public static final String GET_CART = PRE_FIX;
+   // public static final String GET_CART = PRE_FIX + "/{id}";
+//    public static final String CREATE_CART = PRE_FIX;
+//    public static final String UPDATE_CARD = PRE_FIX;
+    public static final String DELETE_CART = PRE_FIX;
+
+
+    private Cart() {
+    }
+  }
+
+  public static class CartItem {
+    private static final String PRE_FIX = "/cartItem";
+
+    public static final String ADD_CART_ITEM = PRE_FIX;
+    public static final String GET_CART_ITEM = PRE_FIX + "/{id}";
+    public static final String CREATE_CART_ITEM = PRE_FIX;
+    public static final String UPDATE_CART_ITEM = PRE_FIX;
+    public static final String DELETE_CART_ITEM = PRE_FIX + "/{id}";
+
+
+    private CartItem() {
     }
   }
 

@@ -75,8 +75,8 @@ public class JwtPreFilter extends OncePerRequestFilter {
           return;
         }
 
-          String userId = tokenProvider.extractSubjectFromJwt(jwt);
-          UserDetails userDetails = customUserDetailsService.loadUserById(userId);
+          String email = tokenProvider.extractSubjectFromJwt(jwt);
+          UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
           UsernamePasswordAuthenticationToken authenticationToken =
               new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
           authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

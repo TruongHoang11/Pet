@@ -3,6 +3,7 @@ package org.com.pet_spr.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.com.pet_spr.constant.ErrorMessage;
+import org.com.pet_spr.domain.dto.request.ReqSetMainImage;
 import org.com.pet_spr.domain.dto.response.CommonResponseDto;
 import org.com.pet_spr.domain.dto.response.ResUploadFileResultDto;
 import org.com.pet_spr.domain.entity.Product;
@@ -83,6 +84,33 @@ public class ProductImageServiceImpl implements ProductImageService {
         return new CommonResponseDto(true, "Xóa ảnh sản phẩm thành công");
 
     }
+
+    @Override
+    public CommonResponseDto changeMainImage(ReqSetMainImage req) {
+        // 1. Kiểm tra sản phẩm có tồn tại không
+        if (!productRepository.existsById(req.getProductId())) {
+            throw new NotFoundException(ErrorMessage.Product.ERR_NOT_FOUND_ID, new String[] {String.valueOf(req.getProductId())});
+        }
+
+        // 2. Kiểm tra ảnh có tồn tại và có thuộc sản phẩm này không
+        ProductImage targetImage = productImageRepository.findById(req.getImageId()).orElseThrow(
+                () -> new NotFoundException(ErrorMessage.ProductImage.ERR_NOT_FOUND_ID, new String[] {String.valueOf(req.getImageId())})
+        );
+
+        if (!targetImage.getProduct().getId().equals(req.getProductId())) {
+            return new CommonResponseDto(false, "Ảnh không thuộc về sản phẩm này");
+        }
+
+        // 3. Đưa tất cả ảnh của sản phẩm về ảnh phụ (isMain = false)
+        productImageRepository.resetMainImageByProductId(req.getProductId());
+
+        // 4. Kích hoạt ảnh được chọn làm ảnh chính (isMain = true)
+        targetImage.setIsMain(true);
+        productImageRepository.save(targetImage);
+
+        return new CommonResponseDto(true, "Thay đổi ảnh đại diện sản phẩm thành công");
+    }
+
 
 
 }

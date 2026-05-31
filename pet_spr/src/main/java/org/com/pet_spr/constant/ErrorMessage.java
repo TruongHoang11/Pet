@@ -6,6 +6,7 @@ public class ErrorMessage {
   public static final String UNAUTHORIZED = "exception.unauthorized";
   public static final String FORBIDDEN = "exception.forbidden";
   public static final String FORBIDDEN_UPDATE_DELETE = "exception.forbidden.update-delete";
+  public static final String LOGIN_REQUIRED = "exception.login-required";
 
   //error validation dto
   public static final String INVALID_SOME_THING_FIELD = "invalid.general";
@@ -79,6 +80,25 @@ public class ErrorMessage {
     public static final String ERR_NOT_ENOUGH_QUANTITY= "exception.inventory.not.enough.quantity";
 
     public static final String ERR_ADJUST_QUANTITY_SAME_AS_CURRENT = "exception.inventory.adjust.quantity.same.as.current";
+  }
+
+
+  public static class Cart {
+    public static final String ERR_EXISTS_NAME = "exception.cart.already.exist.name";
+
+    public static final String ERR_NOT_FOUND_ID = "exception.cart.not.id.found";
+
+    public static final String ERR_CARD_NOT_FOUND = "exception.card.not.found";
+  }
+
+
+
+  public static class CartItem {
+    public static final String ERR_EXISTS_NAME = "exception.cart.item.already.exist.name";
+
+    public static final String ERR_NOT_FOUND_ID = "exception.cart.item.not.id.found";
+
+
   }
 
 
