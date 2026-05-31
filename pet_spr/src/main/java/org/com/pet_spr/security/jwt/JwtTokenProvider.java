@@ -92,6 +92,16 @@ public class JwtTokenProvider {
     return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getExpiration();
   }
 
+
+  //Hàm .before() trong Java kiểm tra xem mốc thời gian A có nằm trước mốc thời gian B hay không.
+  //Hàm extractExpirationFromJwt(token) đọc token và trả về ngày hết hạn là 15:00 ngày hôm nay.
+  //Câu lệnh so sánh sẽ là: 15:00 có trước 16:00 không? Đạt điều kiện! Trả về true.
+ // Kết luận: Token đã hết hạn, hệ thống sẽ từ chối người dùng.
+
+  //Giả sử thời gian hiện tại là 16:00.
+  // Token có ngày hết hạn là 18:00.
+  // Câu lệnh so sánh sẽ là: 18:00 có trước 16:00 không? Sai! Trả về false.
+  // Kết luận: Token còn hạn, người dùng được phép truy cập tiếp.
   public Boolean isTokenExpired(String token) {
     return extractExpirationFromJwt(token).before(new Date());
   }

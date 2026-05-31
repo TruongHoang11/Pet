@@ -56,10 +56,18 @@ public class AuthServiceImpl implements AuthService {
     public LoginResult login(LoginRequestDto loginRequestDto, HttpServletRequest request) {
         // nap input email/password vao security
         try {
+
+
             List<UserSession> userSessionList = userSessionRepository.findAllByEmail(loginRequestDto.getEmail());
             for(UserSession userSession : userSessionList){
-                if(userSession.getIsActive()){
+                boolean validExpiredAccessToken = jwtTokenProvider.validateToken(userSession.getToken());
+                if(validExpiredAccessToken && userSession.getIsActive()){
                     throw new ConflictException(ErrorMessage.Auth.ERR_ALREADY_LOGGED_IN);
+                }
+
+                if(!validExpiredAccessToken){
+                    userSession.setIsActive(false);
+                    userSessionRepository.save(userSession);
                 }
             }
 
@@ -86,17 +94,16 @@ public class AuthServiceImpl implements AuthService {
             if(userSession == null){
                  userSession = new UserSession();
                 userSession.setEmail(user.getEmail());
-                userSession.setToken(accessToken);
-                userSession.setRefreshToken(refreshToken);
                 userSession.setIpAddress(ipAddress);
                 userSession.setUser(user);
 
+            }
 
-            } else{
+                userSession.setRefreshToken(refreshToken);
                 userSession.setToken(accessToken);
                 userSession.setRefreshToken(refreshToken);
                 userSession.setIsActive(true);
-            }
+
 
             userSessionRepository.save(userSession);
             LoginResponseDto loginResponseDto = new LoginResponseDto(userPrincipal.getId(), accessToken, userPrincipal.getAuthorities());
@@ -131,7 +138,7 @@ public class AuthServiceImpl implements AuthService {
         User registerUser = new User();
         registerUser.setName(registerRequestDto.getName());
         registerUser.setEmail(registerRequestDto.getEmail());
-        registerUser.setAddress(registerRequestDto.getAddress());
+
         registerUser.setAge(registerRequestDto.getAge());
         registerUser.setGender(registerRequestDto.getGender());
         registerUser.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
@@ -141,7 +148,7 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(registerUser);
         RegisterResponseDto registerResponseDto = new RegisterResponseDto();
         registerResponseDto.setId(registerUser.getId());
-        registerResponseDto.setAddress(registerUser.getAddress());
+
         registerResponseDto.setAge(registerUser.getAge());
         registerResponseDto.setEmail(registerUser.getEmail());
         registerResponseDto.setGender(registerUser.getGender());

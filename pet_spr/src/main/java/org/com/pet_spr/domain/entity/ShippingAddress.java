@@ -39,6 +39,7 @@ public class ShippingAddress extends DateAuditing {
     @Column(name = "is_default")
     private Boolean isDefault = false; // Đánh dấu đây có phải địa chỉ mặc định không
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user; // Địa chỉ này thuộc về User nào

@@ -44,7 +44,9 @@ public class UserSession {
 
     @PrePersist
     public void activePrePersist(){
-        this.isActive = true;
+        if (this.isActive == null) {
+            this.isActive = true;
+        }
     }
 
 }

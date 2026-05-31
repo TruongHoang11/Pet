@@ -121,4 +121,19 @@ public class UrlConstant {
     }
   }
 
+
+  public static class ShippingAddress {
+    private static final String PRE_FIX = "/shippingAddress";
+
+    public static final String CREATE_SHIPPING_ADDRESS = PRE_FIX;
+    public static final String GET_SHIPPING_ADDRESSES = PRE_FIX + "/list";
+    public static final String SET_DEFAULT_ADDRESS = PRE_FIX + "/{id}";
+    public static final String UPDATE_SHIPPING_ADDRESS = PRE_FIX;
+    public static final String DELETE_SHIPPING_ADDRESS = PRE_FIX + "/{id}";
+
+
+    private ShippingAddress() {
+    }
+  }
+
 }

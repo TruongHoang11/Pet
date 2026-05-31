@@ -29,8 +29,6 @@ public class UserCreateDto {
   @NotNull(message = ErrorMessage.INVALID_SOME_THING_FIELD_IS_REQUIRED)
   private Integer age;
 
-  @NotBlank(message = ErrorMessage.NOT_BLANK_FIELD)
-  private String address;
 
   @NotNull(message = ErrorMessage.INVALID_SOME_THING_FIELD_IS_REQUIRED)
   private GenderEnum gender;

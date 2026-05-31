@@ -51,10 +51,6 @@ public class User extends FlagUserDateAuditing implements Serializable {
     @Column(name = "gender")
     private GenderEnum gender;
 
-    @Column(name = "address")
-    private String address;
-
-
     @Column(name ="provider")
     private String provider; // GOOGLE or FACEBOOK
 

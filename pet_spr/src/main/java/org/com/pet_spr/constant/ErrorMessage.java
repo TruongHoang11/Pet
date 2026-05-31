@@ -23,6 +23,7 @@ public class ErrorMessage {
   public static final String INVALID_OTP= "invalid.otp";
   public static final String OTP_EXPIRED= "otp.expired";
   public static final String INVALID_REPEAT_PASSWORD="invalid.repeat.password";
+  public static final String INVALID_TOO_LONG_FIELD="invalid.too.long.field";
 
   public static class Auth {
     public static final String ERR_INCORRECT_EMAIL = "exception.auth.incorrect.email";
@@ -97,6 +98,14 @@ public class ErrorMessage {
     public static final String ERR_EXISTS_NAME = "exception.cart.item.already.exist.name";
 
     public static final String ERR_NOT_FOUND_ID = "exception.cart.item.not.id.found";
+
+
+  }
+
+  public static class ShippingAddress {
+    public static final String ERR_EXISTS_NAME = "exception.shipping.address.already.exist.name";
+
+    public static final String ERR_NOT_FOUND_ID = "exception.shipping.address.not.id.found";
 
 
   }
