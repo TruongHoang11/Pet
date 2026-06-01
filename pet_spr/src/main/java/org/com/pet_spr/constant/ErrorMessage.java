@@ -90,6 +90,8 @@ public class ErrorMessage {
     public static final String ERR_NOT_FOUND_ID = "exception.cart.not.id.found";
 
     public static final String ERR_CARD_NOT_FOUND = "exception.card.not.found";
+
+    public static final String ERR_NO_SELECTED_ITEMS = "exception.card.no.selected.items.selected";
   }
 
 
@@ -106,6 +108,16 @@ public class ErrorMessage {
     public static final String ERR_EXISTS_NAME = "exception.shipping.address.already.exist.name";
 
     public static final String ERR_NOT_FOUND_ID = "exception.shipping.address.not.id.found";
+
+
+  }
+
+  public static class Order {
+    public static final String ERR_EXISTS_NAME = "exception.order.already.exist.name";
+
+    public static final String ERR_NOT_FOUND_ID = "exception.order.not.id.found";
+
+    public static final String ERR_ORDER_NOT_PENDING ="exception.order.not.pending";
 
 
   }

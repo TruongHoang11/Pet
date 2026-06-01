@@ -84,9 +84,7 @@ public class UrlConstant {
     public static final String ADJUST_PRODUCT = PRE_FIX + "/adjust";
     public static final String GET_INVENTORY_BY_PRODUCT_ID = PRE_FIX + "/{id}";
     public static final String GET_INVENTORY_TRANSACTION_HISTORY = PRE_FIX + "/transaction-history";
-//    public static final String CREATE_PRODUCT = PRE_FIX;
-//    public static final String UPDATE_PRODUCT = PRE_FIX;
-//    public static final String DELETE_PRODUCT = PRE_FIX + "/{id}";
+
 
 
     private Inventory() {
@@ -133,6 +131,26 @@ public class UrlConstant {
 
 
     private ShippingAddress() {
+    }
+  }
+
+  public static class Order {
+    private static final String PRE_FIX = "/order";
+
+    public static final String CREATE_ORDER_FROM_CART = PRE_FIX + "/from-cart";
+    public static final String GET_MY_ORDERS = PRE_FIX;
+    public static final String CREATE_ORDER_FROM_BUY_NOW = PRE_FIX + "/from-buy-now";
+    public static final String UPDATE_ORDER_STATUS = PRE_FIX + "/status";
+    public static final String CANCEL_ORDER = PRE_FIX + "/{id}";
+    public static final String GET_ALL_ORDERS = PRE_FIX + "/list";
+    public static final String GET_ORDER_DETAIL_ADMIN = PRE_FIX + "/{id}";
+
+
+
+
+
+
+    private Order() {
     }
   }
 

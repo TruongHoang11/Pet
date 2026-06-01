@@ -1,5 +1,6 @@
 package org.com.pet_spr.repository;
 
+import jakarta.transaction.Transactional;
 import org.com.pet_spr.domain.entity.Product;
 import org.com.pet_spr.domain.entity.ProductImage;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +17,7 @@ public interface ProductImageRepository extends JpaRepository<ProductImage, Long
 
     // Hủy trạng thái ảnh chính của toàn bộ ảnh thuộc sản phẩm này
     @Modifying
+    @Transactional
     @Query("UPDATE ProductImage p SET p.isMain = false WHERE p.product.id = :productId")
     void resetMainImageByProductId(Long productId);
 }

@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.checkerframework.checker.units.qual.C;
-import org.com.pet_spr.constant.StatusEnum;
+import org.com.pet_spr.constant.OrderStatus;
 import org.com.pet_spr.domain.dto.common.FlagUserDateAuditing;
 
 import java.math.BigDecimal;
@@ -27,7 +26,7 @@ public class Booking extends FlagUserDateAuditing {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private StatusEnum status;
+    private OrderStatus status;
 
     @Column(name = "actual_price",precision = 10, scale = 2)
     private BigDecimal actualPrice; // gia thuc te thu cua khạc

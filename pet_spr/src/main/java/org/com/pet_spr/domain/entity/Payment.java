@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.com.pet_spr.constant.PaymentStatus;
+import org.com.pet_spr.domain.dto.common.DateAuditing;
 
 import java.math.BigDecimal;
 
@@ -12,13 +13,16 @@ import java.math.BigDecimal;
 @Table(name = "tbl_payments")
 @Getter
 @Setter
-public class Payment {
+public class Payment extends DateAuditing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+
+    //mappedBy = "payment" tức là Order là bên giữ FK (payment_id), không phải Payment.
+    //Nên không cần set payment.setOrder(order) mà chỉ cần order.setPayment(payment) là đủ để thiết lập quan hệ 1-1.
+    // nguyên tắc bên nào giữ FK -> bên đó Set.
+    @OneToOne(mappedBy = "payment", fetch = FetchType.LAZY)
     private Order order;
 
     private String paymentMethod; // VD: MOMO, VNPAY, CASH

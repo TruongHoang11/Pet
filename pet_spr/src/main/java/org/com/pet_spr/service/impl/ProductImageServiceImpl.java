@@ -1,5 +1,6 @@
 package org.com.pet_spr.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.com.pet_spr.constant.ErrorMessage;
@@ -40,6 +41,7 @@ public class ProductImageServiceImpl implements ProductImageService {
 
 
     @Override
+    @Transactional
     public CommonResponseDto addImages(Long productId, List<MultipartFile> files) throws URISyntaxException, IOException {
 
         Product product = productRepository.findById(productId).orElseThrow(
@@ -62,6 +64,7 @@ public class ProductImageServiceImpl implements ProductImageService {
     }
 
     @Override
+    @Transactional
     public CommonResponseDto deleteImage(Long imageId) {
         ProductImage productImage = productImageRepository.findById(imageId).orElseThrow(
                 () -> new NotFoundException(ErrorMessage.ProductImage.ERR_NOT_FOUND_ID, new String[] {String.valueOf(imageId)})
@@ -86,6 +89,7 @@ public class ProductImageServiceImpl implements ProductImageService {
     }
 
     @Override
+    @Transactional
     public CommonResponseDto changeMainImage(ReqSetMainImage req) {
         // 1. Kiểm tra sản phẩm có tồn tại không
         if (!productRepository.existsById(req.getProductId())) {

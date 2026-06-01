@@ -1,9 +1,10 @@
 package org.com.pet_spr.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.com.pet_spr.constant.StatusEnum;
+import org.com.pet_spr.constant.OrderStatus;
 import org.com.pet_spr.domain.dto.common.UserDateAuditing;
 
 import java.time.LocalDateTime;
@@ -20,11 +21,12 @@ public class OrderStatusHistory extends UserDateAuditing {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonIgnore // Chặn quét ngược lại Order
     private Order order;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private StatusEnum status; // Hoặc dùng Enum OrderStatus
+    private OrderStatus status; // Hoặc dùng Enum OrderStatus
 
     private String note;
 
