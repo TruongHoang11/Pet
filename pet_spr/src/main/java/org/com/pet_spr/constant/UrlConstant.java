@@ -144,6 +144,7 @@ public class UrlConstant {
     public static final String CANCEL_ORDER = PRE_FIX + "/{id}";
     public static final String GET_ALL_ORDERS = PRE_FIX + "/list";
     public static final String GET_ORDER_DETAIL_ADMIN = PRE_FIX + "/{id}";
+    public static final String GET_ORDER_STATUS_HISTORY = PRE_FIX + "/status-history/{orderId}";
 
 
 

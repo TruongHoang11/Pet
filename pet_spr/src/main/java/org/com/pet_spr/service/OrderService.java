@@ -6,6 +6,7 @@ import org.com.pet_spr.domain.dto.request.ReqCreateOrderBuyNow;
 import org.com.pet_spr.domain.dto.request.ReqCreateOrderFromCart;
 import org.com.pet_spr.domain.dto.request.ReqUpdateOrderStatus;
 import org.com.pet_spr.domain.dto.response.OrderDto;
+import org.com.pet_spr.domain.dto.response.OrderStatusHistoryDto;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -26,4 +27,6 @@ public interface OrderService {
     ResultPaginationDto getAllOrders(List<String> filter, Pageable pageable);
 
     OrderDto getOrderDetailAdmin(Long orderId);
+
+    List<OrderStatusHistoryDto> getOrderStatusHistory(Long orderId);
 }

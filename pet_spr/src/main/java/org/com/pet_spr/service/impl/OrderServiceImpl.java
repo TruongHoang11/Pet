@@ -12,6 +12,7 @@ import org.com.pet_spr.domain.dto.request.ReqCreateOrderBuyNow;
 import org.com.pet_spr.domain.dto.request.ReqCreateOrderFromCart;
 import org.com.pet_spr.domain.dto.request.ReqUpdateOrderStatus;
 import org.com.pet_spr.domain.dto.response.OrderDto;
+import org.com.pet_spr.domain.dto.response.OrderStatusHistoryDto;
 import org.com.pet_spr.domain.entity.*;
 import org.com.pet_spr.domain.entity.OrderStatusHistory;
 import org.com.pet_spr.domain.mapper.OrderDetailMapper;
@@ -36,7 +37,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -522,6 +522,29 @@ public class OrderServiceImpl implements OrderService {
 
         log.info("[ADMIN-ORDER] Xem chi tiết thành công | Order ID: {}", orderId);
         return orderMapper.toDto(order);
+    }
+
+    @Override
+    public List<OrderStatusHistoryDto> getOrderStatusHistory(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(
+                () -> new NotFoundException(ErrorMessage.Order.ERR_NOT_FOUND_ID, new String[]{String.valueOf(orderId)})
+        );
+
+        User currentUser = userService.getUserLogin();
+        if(!order.getUser().getId().equals(currentUser.getId())){
+            throw new ForbiddenException(ErrorMessage.FORBIDDEN);
+        }
+        List<OrderStatusHistory> statusHistoryList = order.getStatusHistory();
+        List<OrderStatusHistoryDto> dtos = statusHistoryList.stream().map(
+                statusHistory -> new OrderStatusHistoryDto(
+                        statusHistory.getId(),
+                        statusHistory.getStatus(),
+                        statusHistory.getNote(),
+                        statusHistory.getChangedAt()
+                )
+        ).toList();
+
+        return dtos;
     }
 
 }

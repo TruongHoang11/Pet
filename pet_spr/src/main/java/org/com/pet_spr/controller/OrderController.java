@@ -75,5 +75,12 @@ public class OrderController {
 
     }
 
+    @GetMapping(UrlConstant.Order.GET_ORDER_STATUS_HISTORY)
+    public ResponseEntity<?> getOrderStatusHistoryByOrderId(@PathVariable Long orderId){
+
+        return VsResponseUtil.success(HttpStatus.OK,orderService.getOrderStatusHistory(orderId));
+
+    }
+
 
 }
