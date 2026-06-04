@@ -25,9 +25,9 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @GetMapping(UrlConstant.Order.GET_ORDER_DETAIL_ADMIN)
-    public ResponseEntity<?> getOrderDetailAdmin(@PathVariable Long id) {
-        return VsResponseUtil.success(HttpStatus.OK, orderService.getOrderDetailAdmin(id));
+    @GetMapping(UrlConstant.Order.GET_ORDER_DETAIL)
+    public ResponseEntity<?> getOrderDetail(@PathVariable Long id) {
+        return VsResponseUtil.success(HttpStatus.OK, orderService.getOrderDetail(id));
     }
 
 

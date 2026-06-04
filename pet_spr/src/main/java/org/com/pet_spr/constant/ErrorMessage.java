@@ -8,6 +8,8 @@ public class ErrorMessage {
   public static final String FORBIDDEN_UPDATE_DELETE = "exception.forbidden.update-delete";
   public static final String LOGIN_REQUIRED = "exception.login-required";
 
+  public static final String INVALID_RESOURCE_NOT_FOUND = "invalid.resource.not-found";
+
   //error validation dto
   public static final String INVALID_SOME_THING_FIELD = "invalid.general";
   public static final String INVALID_FORMAT_SOME_THING_FIELD = "invalid.general.format";
@@ -121,6 +123,22 @@ public class ErrorMessage {
 
 
   }
+
+  public static class Pet {
+    public static final String ERR_EXISTS_NAME = "exception.pet.already.exist.name";
+
+    public static final String ERR_NOT_FOUND_ID = "exception.pet.not.id.found";
+
+    public static final String ERR_PET_IS_LOCKED = "exception.pet.is.locked";
+
+    public static final String ERR_PET_ALREADY_INACTIVE = "exception.pet.already.inactive";
+
+    public static final String ERR_PET_ALREADY_ACTIVE = "exception.pet.already.active";
+
+
+
+  }
+
 
 
 }

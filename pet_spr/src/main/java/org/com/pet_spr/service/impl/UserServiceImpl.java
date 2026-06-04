@@ -105,61 +105,6 @@ public class UserServiceImpl implements UserService {
 
     }
 
-//    @Override
-//    public ResultPaginationDto getAllUser(List<String> filter, Pageable pageable) {
-//
-//        SpecificationBuilder<User> specificationBuilder = new SpecificationBuilder<>();
-//
-//        if(filter != null && !filter.isEmpty()) {
-//            // Regex bóc tách:
-//            // Group 1: Dấu nháy đơn (') báo hiệu OR, có hoặc không (?)
-//            // Group 2: Key (ví dụ: role.name)
-//            // Group 3: Operation (ví dụ: :, >, <)
-//            // Group 4: Value (ví dụ: *admin*)
-//            Pattern pattern = Pattern.compile("^('?)([a-zA-Z0-9_.]+)([<:>~!])(.*)$");
-//            for(String condition : filter){
-//                Matcher matcher = pattern.matcher(condition);
-//                if(matcher.find()){
-//                    String key = matcher.group(2);
-//                    String operation = matcher.group(3);
-//                    String valueStr = matcher.group(4);
-//                    String orIndicator = matcher.group(1);
-//
-//                    String prefix = null;
-//                    String suffix = null;
-//
-//                    if(valueStr.startsWith("*")){
-//                        prefix = "*";
-//                        valueStr = valueStr.substring(1);
-//                    }
-//                    if(valueStr.endsWith("*")){
-//                        suffix = "*";
-//                        valueStr = valueStr.substring(0, valueStr.length() - 1);
-//                    }
-//                    boolean orPredicate = orIndicator != null && orIndicator.equals(SEARCH_OPERATION.OR_PREDICATE_FLAG);
-//                    if(orPredicate){
-//                        specificationBuilder.with(orIndicator, key, operation, valueStr, prefix, suffix);
-//                    } else {
-//                        specificationBuilder.with(key, operation, valueStr, prefix, suffix);
-//                    }
-//                }
-//            }
-//        }
-//
-//        Page<User> userPages = userRepository.findAll(specificationBuilder.build(), pageable);
-//        ResultPaginationDto resultPaginationDto = new ResultPaginationDto();
-//        ResultPaginationDto.Meta meta = new ResultPaginationDto.Meta();
-//        meta.setPage(pageable.getPageNumber() + 1);
-//        meta.setPages(pageable.getPageSize());
-//        meta.setPageSize(userPages.getTotalPages());
-//        meta.setTotal(userPages.getTotalElements());
-//
-//        resultPaginationDto.setMeta(meta);
-//        List<UserDto> result = userMapper.toUserDtos(userPages.getContent());
-//        resultPaginationDto.setResult(result);
-//
-//        return resultPaginationDto;
-//    }
 
 
     @Override

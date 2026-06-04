@@ -26,7 +26,7 @@ public interface OrderService {
 
     ResultPaginationDto getAllOrders(List<String> filter, Pageable pageable);
 
-    OrderDto getOrderDetailAdmin(Long orderId);
+
 
     List<OrderStatusHistoryDto> getOrderStatusHistory(Long orderId);
 }
