@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.com.pet_spr.constant.BookingStatus;
 import org.com.pet_spr.constant.OrderStatus;
 import org.com.pet_spr.domain.dto.common.FlagUserDateAuditing;
 
@@ -26,7 +27,7 @@ public class Booking extends FlagUserDateAuditing {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private OrderStatus status;
+    private BookingStatus status;
 
     @Column(name = "actual_price",precision = 10, scale = 2)
     private BigDecimal actualPrice; // gia thuc te thu cua khạc

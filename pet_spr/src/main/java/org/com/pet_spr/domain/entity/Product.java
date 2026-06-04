@@ -49,7 +49,6 @@ public class Product extends FlagUserDateAuditing {
     private List<CartItem> cartItems;
 
 
-
     @OneToMany(mappedBy = "product")
     @JsonIgnore
     private List<OrderDetail> orderDetails;
@@ -58,6 +57,7 @@ public class Product extends FlagUserDateAuditing {
     @JoinColumn(name = "category_id")
     private Category category;
 
-
+    @OneToMany(mappedBy = "product")
+    private List<Review> productReviews;
 
 }

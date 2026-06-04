@@ -40,5 +40,5 @@ public class Service extends FlagUserDateAuditing {
 
     @ManyToMany(mappedBy = "services")
     @JsonIgnore
-    private List<Booking> booking;
+    private List<Booking> bookings;
 }

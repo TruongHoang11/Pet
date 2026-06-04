@@ -30,6 +30,7 @@ public class Pet extends FlagUserDateAuditing {
     @Column(name = "name")
     private String name;
 
+    //Chủng loại thú cưng (Ví dụ: Mèo Anh lông ngắn, Chó Poodle...)
     @Column(name = "specie")
     private String specie;
 
@@ -37,17 +38,16 @@ public class Pet extends FlagUserDateAuditing {
     @Column(name = "gender")
     private GenderEnum gender;
 
-    @Column(name = "birhday")
+    @Column(name = "birthday")
     private LocalDateTime birthday;
 
     @Column(name = "weight")
     private float weight;
 
+    //Tình trạng sức khỏe, tiền sử bệnh lý hoặc lưu ý đặc biệt khi làm spa
     @Column(name = "health_status")
     private String healthStatus;
 
-    @Column(name = "active")
-    private boolean active;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

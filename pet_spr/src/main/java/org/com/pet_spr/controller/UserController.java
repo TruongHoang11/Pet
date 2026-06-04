@@ -20,7 +20,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/user/{id}")
+    @GetMapping(UrlConstant.User.GET_USER)
     public ResponseEntity<?> getUser(@PathVariable String id){
             return VsResponseUtil.success(HttpStatus.OK,userService.getUserById(id) );
 
@@ -32,20 +32,20 @@ public class UserController {
         return VsResponseUtil.success(HttpStatus.OK, userDto);
     }
 
-    @PutMapping("/user")
+    @PutMapping(UrlConstant.User.UPDATE_USER)
     public ResponseEntity<?> updateUser(@RequestBody UserUpdateDto user){
             return VsResponseUtil.success(HttpStatus.OK,userService.updateUser(user) );
 
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping(UrlConstant.User.DELETE_USER)
     public ResponseEntity<?> deleteUser(@PathVariable String id){
             userService.deleteUser(id);
             return VsResponseUtil.success(HttpStatus.OK, null);
 
     }
 
-    @GetMapping("/user")
+    @GetMapping(UrlConstant.User.GET_USERS)
     public ResponseEntity<?> getAllUser(
             @RequestParam(value = "filter", required = false) List<String> filter,
             Pageable pageable){

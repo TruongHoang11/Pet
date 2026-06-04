@@ -1,6 +1,7 @@
 package org.com.pet_spr.exception;
 
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,16 +14,18 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,7 +35,7 @@ public class GlobalExceptionHandler {
   private final MessageSource messageSource;
 
   //Error validate for param
-  @ExceptionHandler(ConstraintViolationException.class)
+  @ExceptionHandler({ConstraintViolationException.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<RestData<?>> handleConstraintViolationException(ConstraintViolationException ex) {
     Map<String, String> result = new LinkedHashMap<>();
@@ -44,6 +47,50 @@ public class GlobalExceptionHandler {
     });
     return VsResponseUtil.error(HttpStatus.BAD_REQUEST, result);
   }
+
+//  @ExceptionHandler({MethodArgumentNotValidException.class})
+//  @ResponseStatus(HttpStatus.BAD_REQUEST)
+//  public ResponseEntity<RestData<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+//    Map<String, String> result = new LinkedHashMap<>();
+//    ex.getBindingResult().getFieldErrors().forEach((error) -> {
+//      String fieldName = error.getField();
+//      String errorMessage = messageSource.getMessage(Objects.requireNonNull(error.getDefaultMessage()), null,
+//          LocaleContextHolder.getLocale());
+//      result.put(fieldName, errorMessage);
+//    });
+//    return VsResponseUtil.error(HttpStatus.BAD_REQUEST, result);
+//
+//    //.stream()
+//    //            .map(error -> error.getField() + ": " + error.getDefaultMessage())
+//    //            .collect(Collectors.joining(", "));
+//   // return VsResponseUtil.error(HttpStatus.BAD_REQUEST, errorMessage);
+//  }
+
+  @ExceptionHandler({MethodArgumentNotValidException.class})
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<RestData<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    Map<String, String> result = new LinkedHashMap<>();
+    ex.getBindingResult().getFieldErrors().forEach((error) -> {
+      String fieldName = error.getField();
+
+      // Sử dụng hàm getMessage có defaultMessage để chấp nhận cả chuỗi text thô viết ở DTO
+      String errorMessage = messageSource.getMessage(
+              Objects.requireNonNull(error.getDefaultMessage()),
+              null,
+              error.getDefaultMessage(), // Nếu không tìm thấy Key, dùng luôn chuỗi này làm nội dung lỗi
+              LocaleContextHolder.getLocale()
+      );
+      result.put(fieldName, errorMessage);
+    });
+    return VsResponseUtil.error(HttpStatus.BAD_REQUEST, result);
+  }
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity<RestData<?>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+    String message = messageSource.getMessage(ex.getMessage(), null,
+        LocaleContextHolder.getLocale());
+    return VsResponseUtil.error(HttpStatus.BAD_REQUEST, message);
+  }
+
 
   //Error validate for body
   @ExceptionHandler(BindException.class)
@@ -131,6 +178,13 @@ public class GlobalExceptionHandler {
     String message = messageSource.getMessage(ex.getMessage(), ex.getParams() ,LocaleContextHolder.getLocale());
     log.warn(message);
     return VsResponseUtil.error(ex.getStatus(), message);
+  }
+
+  @ExceptionHandler(NoResourceFoundException.class)
+  public ResponseEntity<RestData<?>> handleNoResourceFoundException(NoResourceFoundException ex) {
+    String message = messageSource.getMessage(ErrorMessage.INVALID_RESOURCE_NOT_FOUND, null, LocaleContextHolder.getLocale());
+    log.warn(message);
+    return VsResponseUtil.error(HttpStatus.NOT_FOUND, message);
   }
 
 }

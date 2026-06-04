@@ -3,10 +3,7 @@ package org.com.pet_spr.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.com.pet_spr.constant.ErrorMessage;
-import org.com.pet_spr.constant.OrderStatus;
-import org.com.pet_spr.constant.PaymentStatus;
-import org.com.pet_spr.constant.TypeInventory;
+import org.com.pet_spr.constant.*;
 import org.com.pet_spr.domain.dto.pagination.ResultPaginationDto;
 import org.com.pet_spr.domain.dto.request.ReqCreateOrderBuyNow;
 import org.com.pet_spr.domain.dto.request.ReqCreateOrderFromCart;
@@ -313,18 +310,22 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto getOrderDetail(Long orderId) {
         log.info("[ORDER] Xem chi tiết đơn hàng ID: {}", orderId);
 
-        //Tìm Order
-        Order order = orderRepository.findById(orderId).orElseThrow(
-                () -> new NotFoundException(ErrorMessage.Order.ERR_NOT_FOUND_ID, new String[]{String.valueOf(orderId)}));
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> {
+                    log.warn("[NOT_FOUND] Không tìm thấy đơn hàng ID: {}", orderId);
+                    return new NotFoundException(ErrorMessage.Order.ERR_NOT_FOUND_ID,
+                            new String[]{String.valueOf(orderId)});
+                });
 
-        //  Kiểm tra order có thuộc về user hiện tại không
+        // User chỉ xem được đơn của mình, Admin xem được tất cả
         User currentUser = userService.getUserLogin();
-        if (!order.getUser().getId().equals(currentUser.getId())) {
+        boolean isAdmin = currentUser.getRole().getName().equals(RoleConstant.ADMIN);
+        if (!isAdmin && !order.getUser().getId().equals(currentUser.getId())) {
             throw new ForbiddenException(ErrorMessage.FORBIDDEN);
         }
 
+        log.info("[ORDER] Xem chi tiết thành công | Order ID: {}", orderId);
         return orderMapper.toDto(order);
-
     }
 
     @Override
@@ -510,19 +511,6 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    @Override
-    public OrderDto getOrderDetailAdmin(Long orderId) {
-        log.info("[ADMIN-ORDER] Xem chi tiết đơn hàng ID: {}", orderId);
-
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> {
-                    log.warn("[NOT_FOUND] Không tìm thấy đơn hàng ID: {}", orderId);
-                    return new NotFoundException("Không tìm thấy đơn hàng ID: " + orderId);
-                });
-
-        log.info("[ADMIN-ORDER] Xem chi tiết thành công | Order ID: {}", orderId);
-        return orderMapper.toDto(order);
-    }
 
     @Override
     public List<OrderStatusHistoryDto> getOrderStatusHistory(Long orderId) {
